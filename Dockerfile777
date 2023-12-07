@@ -1,0 +1,39 @@
+# Use an official Maven image as a build environment
+FROM ubuntu:latest
+#FROM maven:3.8.3-openjdk-17
+MAINTAINER Anil k
+ARG JAR_FILE=target/*.jar
+
+# Set the working directory
+WORKDIR /app
+
+# Install Git
+RUN apt update && apt install -y git && apt-get install maven -y
+RUN ls
+# Clone the Git repository
+RUN git clone https://github.com/anlkmr/restdocker.git .
+#RUN cd restdocker
+
+# Switch to a specific branch (optional)
+RUN git checkout master
+RUN ls
+
+
+# Build the application with Maven
+RUN mvn install
+
+# Use a smaller base image for the final image
+#FROM openjdk:17
+
+# Set the working directory
+#WORKDIR /app
+
+
+# Copy the JAR file from the builder image
+COPY target/restdocker.jar restdocker.jar
+
+# Expose the port your application will run on
+EXPOSE 8080
+
+# Specify the command to run your application
+ENTRYPOINT ["java", "-jar", "/restdocker.jar"]

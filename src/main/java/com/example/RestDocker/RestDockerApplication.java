@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @SpringBootApplication
 public class RestDockerApplication {
-	@RequestMapping("/")
+	@RequestMapping("/home")
 	public String home() {
 		return "Hello World!";
 	}
